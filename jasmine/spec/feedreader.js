@@ -2,13 +2,13 @@ $(function() {
     describe('RSS Feeds', function() {
          //checks that RSS feeds list is defined 
          //checks that there is atleast one defined feed item 
-        it('are defined', function() {    
+        it('RSS Feed List Has been defined this is not an empty string', function() {    
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
         //checks that each feed items' URL is defined
         //checks that there is content within each URL string
-         it('has URL', function(){
+         it('Each RSS Feed item has a defined URL property that is not an empty string', function(){
             allFeeds.forEach(function(feedItem){
                 expect(feedItem.url).toBeDefined();
                 expect(feedItem.url.length).not.toBe(0);
@@ -16,7 +16,7 @@ $(function() {
          });
          //checks that each feed item has a name defined 
          //checks that there is content within each name string
-        it('has name', function(){
+        it('Each RSS Feed item has a defined name property that is not an empty string', function(){
             allFeeds.forEach(function(feedItem){
                 expect(feedItem.name).toBeDefined();
                 expect(feedItem.name.length).not.toBe(0);
@@ -25,23 +25,20 @@ $(function() {
     });
 
     describe('The menu', function() {
-        //reference the menu element
-        var menu = document.getElementById('menu');
         //reference to clickable menu link 
-        var menuLink = document.getElementById('menu-icon-link');
-
+        var $menuLink = $('.menu-icon-link');
         //checks that the body has the class menu-hidden applied to it meaning menu will be hidden 
-        it('Menu Hidden', function(){
+        it('When the page loads the menu on the left is hidden', function(){
             expect($('body').hasClass('menu-hidden')).toBe(true);  
         });
         //triggers a click event on the menu, checks to see if the menu is visible 
         //triggers another click event, checks to see if the menu is hidden 
-        it('Hide/Show Menu', function(){
+        it('When the Menu button is clicked, the menu becomes visible. when the menu button is clicked again it is hidden', function(){
             //click to show
-            $(menuLink).trigger('click');
+            $menuLink.trigger('click');
             expect($('body').hasClass('menu-hidden')).toBe(false); 
             //click to hide
-            $(menuLink).trigger('click');
+            $menuLink.trigger('click');
             expect($('body').hasClass('menu-hidden')).toBe(true); 
         });
     }); 
@@ -54,24 +51,24 @@ $(function() {
             });
         });
         //checks to see that there are aricles displayed on the page 
-        it('load feed completes work', function(){
+        it('The Feed loads on the page. The number of feeds that appear on the page is atleast one', function(){
             var articlesCount = $('.entry').length;
             expect(articlesCount).not.toBe(0);
         });
     }); 
     
     describe('New Feed Selection', function() {
-        //save current state of list entries 
-        var currentEntryList = $('.entry'); 
         //ensure loadFeed has been run on the second element before checking - async
+       	var currentEntryList; 
         beforeEach(function(done){
-            loadFeed(1, function(){
+        	//save current state of list entries 
+        	currentEntryList = $('.feed').text(); 
+            loadFeed(1, function(){ 	
                 done(); 
             });
         });
-        //checks to see that $('.entry') contains new content
-        it('Load Feed content Changes', function(){
-            expect($('.entry')).not.toBe(currentEntryList);
+        it('When another RSS feed is selected from the menu the feed refreshes and shows different content', function(){
+            expect($('.feed').text()).not.toBe(currentEntryList);
         });
     }); 
 }());
