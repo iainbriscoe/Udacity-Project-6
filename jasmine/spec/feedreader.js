@@ -59,14 +59,16 @@ $(function() {
     
     describe('New Feed Selection', function() {
         
-    	loadFeed(0); 
+    	
         //ensure loadFeed has been run on the second element before checking - async
        	var currentEntryList; 
         beforeEach(function(done){
-        	//save current state of list entries 
-        	currentEntryList = $('.feed').text(); 
-            loadFeed(1, function(){ 	
-                done(); 
+            loadFeed(0,function(){
+                //save current state of list entries 
+                currentEntryList = $('.feed').text(); 
+                loadFeed(1, function(){
+                    done();
+                });
             });
         });
         it('is selected from the menu the feed refreshes and shows different content', function(){
